@@ -10,7 +10,9 @@ export class CourseItemComponent implements OnInit {
   @Input() course: Course;
   @Output() deleteCourse = new EventEmitter<Course>();
 
-  constructor() { }
+  constructor() { 
+    this.course = {} as Course;
+  }
 
   ngOnInit() {
   }
