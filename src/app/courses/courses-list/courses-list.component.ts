@@ -11,20 +11,26 @@ import { Observable, Subscription } from 'rxjs';
 export class CoursesListComponent implements OnInit {
 
   public courses: Course[];
-  constructor(private service: CoursesService) { }
+  constructor(private coursesService: CoursesService) { }
 
   ngOnInit() {
-    this.courses = this.service.getCourses();
+    this.coursesService.getCourses()
+    .subscribe(
+      courses => this.courses = courses
+    );
   }
 
   deleteCourseHandler(course: Course) {
-    console.log(`Delete course with id=${course.id}`);
-    this.service.deleteCourse(course.id).subscribe((data: Course) => {
+    this.coursesService.deleteCourse(course.id).subscribe((data: Course) => {
       this.courses = this.courses.filter(item => item.id !== data.id);
     });
   }
 
   loadMoreHandler() {
-    console.log(`Load more...`);
+    this.coursesService.loadMore();
+  }
+
+  searchCourseHandler(query: string) {
+    this.coursesService.searchCourse(query);
   }
 }

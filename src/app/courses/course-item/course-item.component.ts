@@ -7,8 +7,10 @@ import { Course } from '../models/course.model';
   styleUrls: ['./course-item.component.css']
 })
 export class CourseItemComponent implements OnInit {
-  @Input() course: Course;
-  @Output() deleteCourse = new EventEmitter<Course>();
+  @Input() 
+  public  course: Course;
+  @Output() 
+  public deleteCourse = new EventEmitter<Course>();
 
   constructor() { 
     this.course = {} as Course;
