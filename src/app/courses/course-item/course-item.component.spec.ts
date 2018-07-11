@@ -1,16 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CourseItemComponent } from './course-item.component';
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Course } from '../models/course.model';
 import { By } from '@angular/platform-browser';
+import { DurationPipe } from '../pipes/duration/duration.pipe';
+import { BorderHighlightDirective } from '../directives/border-highlight.directive';
+import { DecimalPipe } from '@angular/common';
 
 const course: Course = {
   id: 0,
   title: 'Stub title',
   creationDate: new Date(12,12,1212),
   durationMin: 60,
-  description: 'Stub description'
+  description: 'Stub description',
+  topRated: false
 };
 const onDeleteSpy = jasmine.createSpy('onDeleteSpy');
 
@@ -31,7 +35,9 @@ describe('CourseItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TestHostComponent, CourseItemComponent ]
+      declarations: [ TestHostComponent, CourseItemComponent, DurationPipe, BorderHighlightDirective ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [DecimalPipe],
     })
     .compileComponents();
   }));

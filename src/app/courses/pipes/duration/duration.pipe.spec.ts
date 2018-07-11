@@ -2,6 +2,7 @@ import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DurationPipe } from './duration.pipe';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   template: `
@@ -25,6 +26,7 @@ describe('DurationPipe', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ TestComponent, DurationPipe],
+      providers: [DecimalPipe]
     })
     .compileComponents();
   }));

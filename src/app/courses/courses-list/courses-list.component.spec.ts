@@ -6,6 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, Component, Output, EventEmitter, Input } from '
 import { CoursesService } from '../services/courses.service';
 import { By } from '@angular/platform-browser';
 import { Course } from '../models/course.model';
+import { OrderByDatePipe } from '../pipes/orderBy/order-by-date.pipe';
 
 const course =
   {
@@ -13,17 +14,18 @@ const course =
     title: 'Stub title',
     creationDate: new Date(12, 12, 1212),
     durationMin: 60,
-    description: 'Stub description'
+    description: 'Stub description',
+    topRated: false
   };
 const getCourses = jasmine.createSpy('getCourses').and.returnValue(of([course]))
 const deleteCourse = jasmine.createSpy('deleteCourse');
 const loadMore = jasmine.createSpy('loadMore');
-const searchCourse = jasmine.createSpy('searchCourse');
+const searchCourses = jasmine.createSpy('searchCourses');
 const coursesServiceStub: Partial<CoursesService> = {
   getCourses,
   deleteCourse,
   loadMore,
-  searchCourse
+  searchCourses
 };
 
 @Component({
@@ -60,7 +62,7 @@ describe('CoursesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursesListComponent, ToolboxStubComponent, CourseItemStubComponent ],
+      declarations: [ CoursesListComponent, ToolboxStubComponent, CourseItemStubComponent, OrderByDatePipe ],
       providers: [
         { useValue: coursesServiceStub, provide: CoursesService }
       ],
@@ -77,7 +79,7 @@ describe('CoursesListComponent', () => {
     getCourses.calls.reset();
     deleteCourse.calls.reset();
     loadMore.calls.reset();
-    searchCourse.calls.reset();
+    searchCourses.calls.reset();
   });
 
   it('should create', () => {
@@ -88,7 +90,7 @@ describe('CoursesListComponent', () => {
     const searchButton = fixture.debugElement.query(By.css('.search'));
     searchButton.triggerEventHandler('click', null);
 
-    expect(coursesServiceStub.searchCourse).toHaveBeenCalledTimes(1);
+    expect(coursesServiceStub.searchCourses).toHaveBeenCalledTimes(1);
   });
 
   it('should call service method deleteCourse() on course deleteCourse() event', () => {

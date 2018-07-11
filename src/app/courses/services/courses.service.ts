@@ -26,6 +26,7 @@ export class CoursesService {
   }
 
   searchCourses(query: string) : Observable<Course[]> {
+    console.log(`Search courses with name ${query}`);
     return of<Course[]>(courses.filter(course => course.title.toLowerCase().indexOf(query.toLowerCase())!== -1));
   }
 
