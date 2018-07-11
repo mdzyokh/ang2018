@@ -31,6 +31,8 @@ export class CoursesListComponent implements OnInit {
   }
 
   searchCourseHandler(query: string) {
-    this.coursesService.searchCourse(query);
+    this.coursesService.searchCourses(query).subscribe(
+      courses => this.courses = courses
+    );
   }
 }

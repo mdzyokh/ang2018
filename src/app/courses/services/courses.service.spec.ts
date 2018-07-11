@@ -52,8 +52,8 @@ describe('CoursesService', () => {
     expect(console.log).toHaveBeenCalledTimes(1);
   }));
 
-  it('searchCourse() should log query string', inject([CoursesService], (service: CoursesService) => {
-    service.searchCourse('');
+  it('searchCourses() should log query string', inject([CoursesService], (service: CoursesService) => {
+    service.searchCourses('');
 
     expect(console.log).toHaveBeenCalledTimes(1);
   }));

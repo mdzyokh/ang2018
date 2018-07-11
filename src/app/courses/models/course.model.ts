@@ -6,6 +6,7 @@ export class Course implements CourseInterface {
     public title: string,
     public creationDate: Date,
     public durationMin: number,
-    public description: string
+    public description: string,
+    public topRated: boolean,
   ) {}
 }

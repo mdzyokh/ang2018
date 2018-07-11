@@ -1,1 +1,22 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
+
+html, body {
+    height: 100%;
+}
+  
+  app-root {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-height: 100%;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+  }
+  
+  app-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+  }
