@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Course } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
+import { AuthService } from '../../auth/services/auth.service';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
@@ -11,19 +13,27 @@ import { Observable, Subscription } from 'rxjs';
 export class CoursesListComponent implements OnInit {
 
   public courses: Course[];
-  constructor(private coursesService: CoursesService) { }
+  constructor(private router: Router, 
+              private authService: AuthService, 
+              private coursesService: CoursesService) { }
 
   ngOnInit() {
-    this.coursesService.getCourses()
-    .subscribe(
-      courses => this.courses = courses
-    );
+    if (!this.authService.isAuthenticated()) {
+        this.router.navigate['/auth'];
+    } else {
+      this.coursesService.getCourses()
+      .subscribe(
+        courses => this.courses = courses
+      );
+    }
   }
 
   deleteCourseHandler(course: Course) {
-    this.coursesService.deleteCourse(course.id).subscribe((data: Course) => {
-      this.courses = this.courses.filter(item => item.id !== data.id);
-    });
+    if(window.confirm('Do you really want to delete this course ?')){
+      this.coursesService.deleteCourse(course.id).subscribe((data: Course) => {
+        this.courses = this.courses.filter(item => item.id !== data.id);
+      });
+     }
   }
 
   loadMoreHandler() {

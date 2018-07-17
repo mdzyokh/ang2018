@@ -1,5 +1,9 @@
 <nav class="navbar navbar-light bg-light rounded d-flex flex-row">
     <app-logo class="mr-auto"></app-logo>
-    <app-login class="mr-1"></app-login>
+    <app-login  *ngIf="authService.isAuthenticated()" 
+                [currentUser]="authService.getUserInfo()"
+                (logout)="onLogout($event)" 
+                class="mr-1">
+    </app-login>
 </nav>
 

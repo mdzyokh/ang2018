@@ -4,6 +4,8 @@ export class User implements UserInterface {
   constructor(
     public id: number,
     public firstName: string,
-    public lastName: string
+    public lastName: string,
+    public login: string,
+    public password: string,
   ) { }
 }

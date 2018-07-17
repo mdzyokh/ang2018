@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { User } from '../models/user.model';
 
@@ -7,14 +7,14 @@ import { User } from '../models/user.model';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  public currentUser: User;
+  @Input() currentUser: User;
+  @Output() logout = new EventEmitter<any>();
 
   constructor() { }
 
-  ngOnInit() {
-    this.currentUser = new User(1, "John", "Smith");
+  public logoutHandler(): void {
+    this.logout.emit();
   }
-
 }
