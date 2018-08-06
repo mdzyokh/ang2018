@@ -30,19 +30,6 @@ const coursesServiceStub: Partial<CoursesService> = {
   searchCourses
 };
 
-const login = jasmine.createSpy('login');
-const logout = jasmine.createSpy('logout');
-const isAuthenticated = jasmine.createSpy('isAuthenticated');
-const authServiceStub: Partial<AuthService> = {
-  login,
-  logout,
-  isAuthenticated
-};
-
-const routerStub = {
-  navigate: jasmine.createSpy('navigate')
-};
-
 @Component({
   selector: 'app-course-item',
   template: '<button class="delete-course" (click)="onClick()"></button>'
@@ -79,8 +66,6 @@ describe('CoursesListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CoursesListComponent, ToolboxStubComponent, CourseItemStubComponent, OrderByDatePipe],
       providers: [
-        { provide: Router, useValue: routerStub},
-        { provide: AuthService, useValue: authServiceStub },
         { provide: CoursesService, useValue: coursesServiceStub }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]

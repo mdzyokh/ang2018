@@ -1,4 +1,3 @@
-<app-breadcrumbs></app-breadcrumbs>
 <app-toolbox (searchHandler)='searchCourseHandler($event)'></app-toolbox>
 <div class="component mr-3 ml-3">
     <app-course-item *ngFor="let course of (courses | orderByDate)" (deleteCourse)="deleteCourseHandler($event)" [course]="course"></app-course-item>

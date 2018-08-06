@@ -11,7 +11,7 @@
     <p class="card-text">{{course.description}}</p>
   </div>
   <div class="d-flex flex-column align-items-center">
-    <button class="btn btn-outline-primary col-sm mb-1" type="button">Edit</button>
+    <button class="btn btn-outline-primary col-sm mb-1" type="button" [routerLink]="[course.id]">Edit</button>
     <button (click)="deleteCourseHandler()" class="btn btn-outline-dark col-sm" type="button">Delete</button>
   </div>
 </div>
