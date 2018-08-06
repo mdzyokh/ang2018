@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ChangeDetectionStrategy} from '@angular/core';
 import { Router } from '@angular/router';
 import { Course } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
 import { AuthService } from '../../auth/services/auth.service';
-import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
-  styleUrls: ['./courses-list.component.css']
+  styleUrls: ['./courses-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoursesListComponent implements OnInit {
 

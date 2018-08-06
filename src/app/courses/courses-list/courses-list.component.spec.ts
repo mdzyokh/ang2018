@@ -4,19 +4,21 @@ import { of } from 'rxjs';
 import { CoursesListComponent } from './courses-list.component';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Output, EventEmitter, Input } from '@angular/core';
 import { CoursesService } from '../services/courses.service';
+import { AuthService } from '../../auth/services/auth.service';
 import { By } from '@angular/platform-browser';
 import { Course } from '../models/course.model';
 import { OrderByDatePipe } from '../pipes/orderBy/order-by-date.pipe';
+import { Router } from '@angular/router';
 
 const course =
-  {
-    id: 0,
-    title: 'Stub title',
-    creationDate: new Date(12, 12, 1212),
-    durationMin: 60,
-    description: 'Stub description',
-    topRated: false
-  };
+{
+  id: 0,
+  title: 'Stub title',
+  creationDate: new Date(12, 12, 1212),
+  durationMin: 60,
+  description: 'Stub description',
+  topRated: false
+};
 const getCourses = jasmine.createSpy('getCourses').and.returnValue(of([course]))
 const deleteCourse = jasmine.createSpy('deleteCourse');
 const loadMore = jasmine.createSpy('loadMore');
@@ -26,6 +28,19 @@ const coursesServiceStub: Partial<CoursesService> = {
   deleteCourse,
   loadMore,
   searchCourses
+};
+
+const login = jasmine.createSpy('login');
+const logout = jasmine.createSpy('logout');
+const isAuthenticated = jasmine.createSpy('isAuthenticated');
+const authServiceStub: Partial<AuthService> = {
+  login,
+  logout,
+  isAuthenticated
+};
+
+const routerStub = {
+  navigate: jasmine.createSpy('navigate')
 };
 
 @Component({
@@ -62,13 +77,15 @@ describe('CoursesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursesListComponent, ToolboxStubComponent, CourseItemStubComponent, OrderByDatePipe ],
+      declarations: [CoursesListComponent, ToolboxStubComponent, CourseItemStubComponent, OrderByDatePipe],
       providers: [
-        { useValue: coursesServiceStub, provide: CoursesService }
+        { provide: Router, useValue: routerStub},
+        { provide: AuthService, useValue: authServiceStub },
+        { provide: CoursesService, useValue: coursesServiceStub }
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -94,7 +111,7 @@ describe('CoursesListComponent', () => {
   });
 
   it('should call service method deleteCourse() on course deleteCourse() event', () => {
-    const removeButton = fixture.debugElement.query(By.css('.delete-course'));
+    const removeButton = fixture.debugElement.query(By.css('.btn-outline-dark'));
     removeButton.triggerEventHandler('click', null);
 
     expect(coursesServiceStub.deleteCourse).toHaveBeenCalledTimes(1);
