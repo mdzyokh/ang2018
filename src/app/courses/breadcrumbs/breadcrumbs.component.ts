@@ -23,7 +23,7 @@ export class BreadcrumbsComponent implements OnInit {
         if (id) {
           this.coursesService.findCourseById(id).subscribe((course) => {
             if (course) {
-              this.breadcrumbs = ` / ${course.title}`;
+              this.breadcrumbs = ` / ${course.name}`;
             } else {
               this.breadcrumbs = '';
             }

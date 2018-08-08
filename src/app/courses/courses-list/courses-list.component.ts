@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
-import { cpus } from 'os';
 
 @Component({
   selector: 'app-courses-list',
@@ -11,14 +10,14 @@ import { cpus } from 'os';
 export class CoursesListComponent implements OnInit {
 
   public courses: Course[] = [];
-  private query = '';
-  private pageNumber: number = 0;
+  public canLoadMore: boolean = true;
+  private currentPage: number = 0;
 
   constructor(
     private coursesService: CoursesService) { }
 
   ngOnInit() {
-    this.fetchCourses();
+    this.fetchCourses('');
   }
 
   deleteCourseHandler(course: Course) {
@@ -30,20 +29,24 @@ export class CoursesListComponent implements OnInit {
   }
 
   loadMoreHandler() {
-    this.pageNumber++;
-    this.fetchCourses();
+    this.currentPage++;
+    this.fetchCourses('');
   }
 
   searchCourseHandler(query: string) {
     this.courses = [];
-    this.query = query;
-    this.pageNumber = 0;
-    this.fetchCourses();
+    this.currentPage = 0;
+    this.fetchCourses(query);
   }
 
-  private fetchCourses() {
-    this.coursesService.getCourses(this.query, this.pageNumber)
+  private fetchCourses(query: string) {
+    this.coursesService.getCourses(query, this.currentPage)
       .subscribe(
-        (courses) => this.courses = this.courses.concat(courses))
+        (courses) => {
+        this.courses = this.courses.concat(courses);
+          if (!courses.length) {
+            this.canLoadMore = false;
+          }
+        })
   }
 }
