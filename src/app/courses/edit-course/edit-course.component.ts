@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { CoursesService } from '../services/courses.service';
 import { Course } from '../models/course.model';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-edit-course',
     templateUrl: './edit-course.component.html',
     styleUrls: ['./edit-course.component.css']
 })
-export class EditCourseComponent implements OnInit {
+export class EditCourseComponent implements OnInit, OnDestroy {
 
     public id;
     public courseTitle = '';
@@ -18,27 +19,29 @@ export class EditCourseComponent implements OnInit {
     public courseAuthors = '';
     public topRated;
 
+    private subscriptions: Array<Subscription> = [];
+
     constructor(private router: Router,
         private activatedRoute: ActivatedRoute,
         private coursesService: CoursesService) { }
 
 
     ngOnInit(): void {
-        this.activatedRoute.params.subscribe((params: Params) => {
+        this.subscriptions.push(this.activatedRoute.params.subscribe((params: Params) => {
             this.id = +params.id;
-            this.coursesService.findCourseById(this.id).subscribe((course) => {
+            this.coursesService.findCourseById(this.id).subscribe((course: Course) => {
                 if (course) {
-                    this.courseTitle = course.title;
+                    this.courseTitle = course.name;
                     this.courseDescription = course.description;
-                    this.courseDuration = course.durationMin;
-                    this.courseDate = course.creationDate;
+                    this.courseDuration = course.length;
+                    this.courseDate = course.date;
                     this.courseAuthors = '';
-                    this.topRated = course.topRated;
+                    this.topRated = course.isTopRated;
                 } else {
                     this.router.navigate(['courses']);
                 }
             });
-        })
+        }))
     }
 
     public close() {
@@ -46,7 +49,15 @@ export class EditCourseComponent implements OnInit {
     }
 
     public save() {
-        this.coursesService.updateCourse(new Course(this.id, this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, this.topRated));
-        this.router.navigate(['courses']);
+        var course = new Course(this.id, this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, this.topRated, []);
+        this.subscriptions.push(this.coursesService.updateCourse(course).subscribe(() => {
+            this.router.navigate(['courses']);
+        }));
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach((subscription: Subscription) => {
+            subscription.unsubscribe();
+        });
     }
 }

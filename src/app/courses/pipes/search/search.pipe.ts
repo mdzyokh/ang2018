@@ -7,6 +7,6 @@ import { Course } from '../../models/course.model';
 export class SearchPipe implements PipeTransform {
   
     transform(allItems: Course[], query: string): Course[] {
-        return allItems.filter((item) => ((item.title.toLowerCase()).indexOf(query.toLowerCase()) !== -1));  
+        return allItems.filter((item) => ((item.name.toLowerCase()).indexOf(query.toLowerCase()) !== -1));  
     }
 }

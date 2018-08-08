@@ -1,8 +1,11 @@
+import { Author } from "./author.model";
+
 export interface CourseInterface {
     id: number;
-    title: string;
-    creationDate: Date;
-    durationMin: number;
+    name: string;
     description: string;
-    topRated: boolean;
+    isTopRated?: boolean;
+    date: Date;
+    authors: Author[]
+    length: number;
 }

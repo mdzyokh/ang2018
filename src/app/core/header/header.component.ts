@@ -1,7 +1,8 @@
-import { Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +11,13 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
 
-  constructor(private router: Router, public authService: AuthService) { }
+  public user: User = null;
+
+  constructor(private router: Router, public authService: AuthService) { 
+    this.authService.getUserInfo().subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   onLogout(): void {
     this.authService.logout();

@@ -6,15 +6,19 @@ import { AuthService } from './auth/services/auth.service';
   providedIn: 'root'
 })
 export class CoursesGuard implements CanActivate {
+  private isAuthenticated = false;
 
   constructor(private authService: AuthService,
-              private router: Router) {}
+    private router: Router) {
+    this.authService.isAuthenticated().subscribe(
+      isAuthenticated => this.isAuthenticated = isAuthenticated
+    );
+  }
 
   canActivate(): boolean {
-    const isAuthenticated = this.authService.isAuthenticated();
-    if (isAuthenticated) {
+    if (this.isAuthenticated) {
       this.router.navigate(['courses']);
     }
-    return !isAuthenticated;
+    return !this.isAuthenticated;
   }
 }

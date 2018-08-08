@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -16,8 +16,12 @@ export class AuthComponent {
     private authService: AuthService) { }
 
   onSubmit() {
-    this.authService.login(this.login, this.password);
-    this.router.navigate(['/courses']);
+    this.authService.login(this.login, this.password)
+      .subscribe(isLoggedIn => {
+        if (isLoggedIn) {
+          this.router.navigate(['/courses'])
+        }
+      });
   }
 
 }
