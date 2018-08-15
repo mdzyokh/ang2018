@@ -3,6 +3,7 @@ import { Router, Params, ActivatedRoute } from '@angular/router';
 import { CoursesService } from '../services/courses.service';
 import { Course } from '../models/course.model';
 import { Subscription } from 'rxjs';
+import { LoadingService } from '../../core/loading/services/loading.service';
 
 @Component({
     selector: 'app-edit-course',
@@ -23,10 +24,12 @@ export class EditCourseComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
         private activatedRoute: ActivatedRoute,
-        private coursesService: CoursesService) { }
+        private coursesService: CoursesService,
+        private loadingService: LoadingService) { }
 
 
     ngOnInit(): void {
+        this.loadingService.show();
         this.subscriptions.push(this.activatedRoute.params.subscribe((params: Params) => {
             this.id = +params.id;
             this.coursesService.findCourseById(this.id).subscribe((course: Course) => {
@@ -37,7 +40,9 @@ export class EditCourseComponent implements OnInit, OnDestroy {
                     this.courseDate = course.date;
                     this.courseAuthors = '';
                     this.topRated = course.isTopRated;
+                    this.loadingService.hide();
                 } else {
+                    this.loadingService.hide();
                     this.router.navigate(['courses']);
                 }
             });
@@ -49,8 +54,10 @@ export class EditCourseComponent implements OnInit, OnDestroy {
     }
 
     public save() {
+        this.loadingService.show()
         var course = new Course(this.id, this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, this.topRated, []);
         this.subscriptions.push(this.coursesService.updateCourse(course).subscribe(() => {
+            this.loadingService.hide();
             this.router.navigate(['courses']);
         }));
     }

@@ -1,10 +1,11 @@
 <nav class="navbar d-flex flex-row">
   <div class="mr-auto">
-    <form class="form-inline">
+    <form class="form-inline" autocomplete="off">
       <div class="form-group">
-          <input [(ngModel)]="searchInput" class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">
+          <input [(ngModel)]="searchInput" class="form-control mr-sm-2" type="search" 
+          placeholder="Search" name="search" aria-label="Search"
+          (ngModelChange)='onSearchValueChange()'>
       </div>
-        <button (click)="onSearchPressed(searchInput)" class="btn btn-primary" type="submit">Search</button>
      </form>
   </div>
    <button class="btn btn-primary" (click)="navigateToAddCoursePage()">Add course</button>

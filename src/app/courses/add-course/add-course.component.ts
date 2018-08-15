@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoursesService } from '../services/courses.service';
 import { Course } from '../models/course.model';
 import { Subscription } from 'rxjs';
+import { LoadingService } from '../../core/loading/services/loading.service';
 
 @Component({
     selector: 'app-add-course',
@@ -20,15 +21,18 @@ export class AddCourseComponent implements OnDestroy {
     private createCourseSubscription: Subscription;
 
     constructor(private router: Router,
-        private coursesService: CoursesService) { }
+        private coursesService: CoursesService,
+        private loadingService: LoadingService) { }
 
     public close() {
         this.router.navigate(['courses']);
     }
 
     public save() {
+        this.loadingService.show();
         var course = new Course(Date.now(), this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, false, []);
         this.createCourseSubscription = this.coursesService.createCourse(course).subscribe(() => {
+            this.loadingService.hide();
             this.router.navigate(['courses']);
         });
 

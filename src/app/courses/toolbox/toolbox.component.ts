@@ -16,7 +16,7 @@ export class ToolboxComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSearchPressed(event) {
+  onSearchValueChange() {
     this.searchHandler.emit(this.searchInput);
   }
 
