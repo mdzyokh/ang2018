@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { CoursesListComponent } from './courses-list/courses-list.component';
-import { CourseItemComponent } from './course-item/course-item.component';
-import { ToolboxComponent } from './toolbox/toolbox.component';
-import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-import { AddCourseComponent } from './add-course/add-course.component';
-import { EditCourseComponent } from './edit-course/edit-course.component';
+import { CoursesListComponent } from './components/courses-list/courses-list.component';
+import { CourseItemComponent } from './components/course-item/course-item.component';
+import { ToolboxComponent } from './components/toolbox/toolbox.component';
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import { AddCourseComponent } from './components/add-course/add-course.component';
+import { EditCourseComponent } from './components/edit-course/edit-course.component';
 
 import { BorderHighlightDirective } from './directives/border-highlight.directive';
 import { DurationPipe } from './pipes/duration/duration.pipe';

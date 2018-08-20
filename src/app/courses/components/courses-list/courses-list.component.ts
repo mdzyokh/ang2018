@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Course } from '../models/course.model';
-import { CoursesService } from '../services/courses.service';
+import { Course } from '../../models/course.model';
+import { CoursesService } from '../../services/courses.service';
 import { debounceTime, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { LoadingService } from '../../core/loading/services/loading.service';
+import { LoadingService } from '../../../core/loading/services/loading.service';
 
 @Component({
   selector: 'app-courses-list',

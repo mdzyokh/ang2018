@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { CoursesService } from '../services/courses.service';
-import { Course } from '../models/course.model';
+import { CoursesService } from '../../services/courses.service';
+import { Course } from '../../models/course.model';
 import { Subscription } from 'rxjs';
-import { LoadingService } from '../../core/loading/services/loading.service';
+import { LoadingService } from '../../../core/loading/services/loading.service';
 
 @Component({
     selector: 'app-add-course',

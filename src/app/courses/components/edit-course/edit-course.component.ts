@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
-import { CoursesService } from '../services/courses.service';
-import { Course } from '../models/course.model';
+import { CoursesService } from '../../services/courses.service';
+import { Course } from '../../models/course.model';
 import { Subscription } from 'rxjs';
-import { LoadingService } from '../../core/loading/services/loading.service';
+import { LoadingService } from '../../../core/loading/services/loading.service';
 
 @Component({
     selector: 'app-edit-course',
