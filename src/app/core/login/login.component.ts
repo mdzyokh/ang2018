@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { User } from '../models/user.model';
 
@@ -11,8 +11,6 @@ export class LoginComponent {
 
   @Input() currentUser: User;
   @Output() logout = new EventEmitter<any>();
-
-  constructor() { }
 
   public logoutHandler(): void {
     this.logout.emit();
