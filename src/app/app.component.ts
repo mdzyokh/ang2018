@@ -8,6 +8,11 @@ import { AuthService } from './auth/services/auth.service';
 })
 export class AppComponent {
   title = 'app';
+  isAuthenticated = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    this.authService.isAuthenticated().subscribe(
+      isAuthenticated => this.isAuthenticated = isAuthenticated
+    );
+  }
 }
