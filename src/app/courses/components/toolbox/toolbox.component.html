@@ -2,11 +2,9 @@
   <div class="mr-auto">
     <form class="form-inline" autocomplete="off">
       <div class="form-group">
-          <input [(ngModel)]="searchInput" class="form-control mr-sm-2" type="search" 
-          placeholder="Search" name="search" aria-label="Search"
-          (ngModelChange)='onSearchValueChange()'>
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search" (keyup)="searchInput.next($event.target.value)">
       </div>
-     </form>
+    </form>
   </div>
-   <button class="btn btn-primary" (click)="navigateToAddCoursePage()">Add course</button>
+  <button class="btn btn-primary" (click)="navigateToAddCoursePage()">Add course</button>
 </nav>

@@ -15,26 +15,12 @@ export class CoursesListComponent implements OnInit {
   public courses: Course[] = [];
   public canLoadMore: boolean = true;
   private currentPage: number = 0;
-  private searchQuery: Subject<string> = new Subject<string>();
 
   constructor(
     private coursesService: CoursesService,
     private loadingService: LoadingService) { }
 
   ngOnInit() {
-    this.searchQuery
-      .pipe(
-        debounceTime(400),
-        tap(() => {
-          this.loadingService.show();
-          this.courses = [];
-          this.currentPage = 0;
-        })
-      )
-      .subscribe(value => {
-        this.fetchCourses(value);
-      });
-    this.loadingService.show();
     this.fetchCourses('');
   }
 
@@ -54,10 +40,13 @@ export class CoursesListComponent implements OnInit {
   }
 
   searchCourseHandler(query: string) {
-    this.searchQuery.next(query);
+    this.courses = [];
+    this.currentPage = 0;
+    this.fetchCourses(query);
   }
 
   private fetchCourses(query: string) {
+    this.loadingService.show();
     this.coursesService.getCourses(query, this.currentPage)
       .subscribe(
         (courses) => {
