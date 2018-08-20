@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Course } from '../../models/course.model';
 
 @Component({
@@ -7,21 +7,13 @@ import { Course } from '../../models/course.model';
   styleUrls: ['./course-item.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseItemComponent implements OnInit {
+export class CourseItemComponent {
   @Input()
-  public course: Course;
+  public course: Course = {} as Course;
   @Output()
   public deleteCourse = new EventEmitter<Course>();
-
-  constructor() {
-    this.course = {} as Course;
-  }
-
-  ngOnInit() {
-  }
 
   deleteCourseHandler(): void {
     this.deleteCourse.emit(this.course);
   }
-  
 }
