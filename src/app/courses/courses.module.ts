@@ -14,14 +14,21 @@ import { OrderByDatePipe } from './pipes/orderBy/order-by-date.pipe';
 import { SearchPipe } from './pipes/search/search.pipe';
 
 import { CoursesRoutingModule } from './courses-routing.module';
+import { CoursesService } from './services/courses.service';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { coursesReducer } from '../core/store/courses/courses.reducer';
+import { CoursesEffects } from '../core/store/courses/courses.effects';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    CoursesRoutingModule
+    CoursesRoutingModule,
+    StoreModule.forFeature('courses', coursesReducer),
+    EffectsModule.forFeature([CoursesEffects]),
   ],
-  providers: [DecimalPipe],
+  providers: [DecimalPipe, CoursesService],
   declarations: [CoursesListComponent, CourseItemComponent, ToolboxComponent, BorderHighlightDirective, DurationPipe, OrderByDatePipe, SearchPipe, BreadcrumbsComponent, AddCourseComponent, EditCourseComponent],
   exports: [CoursesListComponent, CourseItemComponent, ToolboxComponent, BorderHighlightDirective, DurationPipe, OrderByDatePipe, SearchPipe, BreadcrumbsComponent, AddCourseComponent, EditCourseComponent],
 })

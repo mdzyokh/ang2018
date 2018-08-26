@@ -1,9 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { CoursesService } from '../../services/courses.service';
+import { Store } from '@ngrx/store';
 import { Course } from '../../models/course.model';
 import { Subscription } from 'rxjs';
-import { LoadingService } from '../../../core/loading/services/loading.service';
+import * as coursesActions from '../../../core/store/courses/courses.actions';
+import { AppState } from '../../../core/store/app.state';
 
 @Component({
     selector: 'app-add-course',
@@ -21,21 +22,16 @@ export class AddCourseComponent implements OnDestroy {
     private createCourseSubscription: Subscription;
 
     constructor(private router: Router,
-        private coursesService: CoursesService,
-        private loadingService: LoadingService) { }
+        private store: Store<AppState>) { }
 
     public close() {
         this.router.navigate(['courses']);
     }
 
     public save() {
-        this.loadingService.show();
         var course = new Course(Date.now(), this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, false, []);
-        this.createCourseSubscription = this.coursesService.createCourse(course).subscribe(() => {
-            this.loadingService.hide();
-            this.router.navigate(['courses']);
-        });
-
+        this.store.dispatch(new coursesActions.AddCourse(course));
+        this.router.navigate(['courses']);
     }
 
     ngOnDestroy(): void {

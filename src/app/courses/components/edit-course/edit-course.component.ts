@@ -4,6 +4,9 @@ import { CoursesService } from '../../services/courses.service';
 import { Course } from '../../models/course.model';
 import { Subscription } from 'rxjs';
 import { LoadingService } from '../../../core/loading/services/loading.service';
+import * as coursesActions from '../../../core/store/courses/courses.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../core/store/app.state';
 
 @Component({
     selector: 'app-edit-course',
@@ -23,16 +26,16 @@ export class EditCourseComponent implements OnInit, OnDestroy {
     private subscriptions: Array<Subscription> = [];
 
     constructor(private router: Router,
+        private loadingService: LoadingService,
         private activatedRoute: ActivatedRoute,
-        private coursesService: CoursesService,
-        private loadingService: LoadingService) { }
+        private coursesStore: Store<AppState>) { }
 
 
     ngOnInit(): void {
         this.loadingService.show();
         this.subscriptions.push(this.activatedRoute.params.subscribe((params: Params) => {
             this.id = +params.id;
-            this.coursesService.findCourseById(this.id).subscribe((course: Course) => {
+            this.coursesStore.select(this.id).subscribe((course: Course) => {
                 if (course) {
                     this.courseTitle = course.name;
                     this.courseDescription = course.description;
@@ -54,12 +57,9 @@ export class EditCourseComponent implements OnInit, OnDestroy {
     }
 
     public save() {
-        this.loadingService.show()
         var course = new Course(this.id, this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, this.topRated, []);
-        this.subscriptions.push(this.coursesService.updateCourse(course).subscribe(() => {
-            this.loadingService.hide();
-            this.router.navigate(['courses']);
-        }));
+        this.coursesStore.dispatch(new coursesActions.UpdateCourse(course));
+        this.router.navigate(['courses']);
     }
 
     ngOnDestroy(): void {

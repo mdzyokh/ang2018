@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { User } from '../../core/models/user.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
 
 const API_URL = "http://localhost:3004/";
@@ -28,8 +28,8 @@ export class AuthService {
       }));
   }
 
-  logout() {
-    return this.fakeToken.next(null);
+  logout(): Observable<void> {
+    return of(this.fakeToken.next(null));
   }
 
   isAuthenticated(): Observable<boolean> {
