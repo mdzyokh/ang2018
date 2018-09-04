@@ -23,8 +23,8 @@ export class CoursesEffects {
     ofType(CoursesActions.CoursesActionTypes.GET_COURSES),
     withLatestFrom(this.store$),
     switchMap((action: any) => {
-      const search = action.search;
-      const pageNumber = action.pageNumber;
+      const search = action[0].payload.query;
+      const pageNumber = action[0].payload.pageNumber;
       return this.coursesService.getCourses(search, pageNumber).toPromise()
       .then((data: Course[]) => {
         return new CoursesActions.GetCoursesComplete(data);
@@ -38,8 +38,8 @@ export class CoursesEffects {
     ofType(CoursesActions.CoursesActionTypes.ADD_COURSE),
     switchMap((action: any) => {
       return this.coursesService.createCourse(action.payload).toPromise()
-      .then(() => {
-        return new CoursesActions.AddCourseComplete();
+      .then((data: Course) => {
+        return new CoursesActions.AddCourseComplete(data);
       })
       .catch(error => new CoursesActions.AddCoursesError(error));
     })
@@ -50,8 +50,8 @@ export class CoursesEffects {
     ofType(CoursesActions.CoursesActionTypes.UPDATE_COURSE),
     switchMap((action: any) => {
       return this.coursesService.updateCourse(action.payload).toPromise()
-      .then(() => {
-        return new CoursesActions.UpdateCourseComplete();
+      .then((data: Course) => {
+        return new CoursesActions.UpdateCourseComplete(data);
       })
       .catch(error => new CoursesActions.UpdateCourseError(error));
     })
@@ -62,9 +62,9 @@ export class CoursesEffects {
     ofType(CoursesActions.CoursesActionTypes.DELETE_COURSE),
     withLatestFrom(this.store$),
     switchMap((action: any) => {
-      return this.coursesService.deleteCourse(action.payload).toPromise()
-      .then((data: Course) => {
-         return new CoursesActions.DeleteCourseComplete(data);
+      return this.coursesService.deleteCourse(action[0].payload).toPromise()
+      .then(() => {
+         return new CoursesActions.DeleteCourseComplete(action[0].payload);
       })
       .catch(error => new CoursesActions.DeleteCourseError(error));
     })

@@ -8,7 +8,7 @@ export function coursesReducer(state = initialCourseState, action: CoursesAction
       return { ...state, loading: true };
     }
     case CoursesActionTypes.GET_COURSES_COMPLETE: {
-      const data = [...(<Array<Course>>action.payload)];
+      const data = action.payload;
       return {
         ...state,
         data,
@@ -55,9 +55,11 @@ export function coursesReducer(state = initialCourseState, action: CoursesAction
       return { ...state, loading: true };
     }
     case CoursesActionTypes.DELETE_COURSE_COMPLETE: {
-      const deletedItem = <Course>action.payload;
+      const deletedId = action.payload;
+      const data = state.data.filter(item => item.id !== deletedId);
       return {
         ...state,
+        data,
         loading: false,
       };
     }

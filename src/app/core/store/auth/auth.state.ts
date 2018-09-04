@@ -1,15 +1,15 @@
 import { User } from "../../models/user.model";
 
 export interface AuthState {
-    readonly user: User;
-    readonly loggedIn: boolean;
-    readonly loading: boolean;
-    readonly error: Error | string;
+    user: User;
+    isAuthenticated: boolean;
+    loading: boolean;
+    error: Error | string;
 }
 
 export const initialAuthState: AuthState = {
     user: null,
-    loggedIn: false,
+    isAuthenticated: false,
     loading: false,
     error: null
-  };
+};

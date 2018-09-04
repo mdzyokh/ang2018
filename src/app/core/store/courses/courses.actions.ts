@@ -18,12 +18,12 @@ export enum CoursesActionTypes {
 
 export class GetCourses implements Action {
   readonly type = CoursesActionTypes.GET_COURSES;
-  constructor(public payload: {query: string, pageNumber: number}) { }
+  constructor(public payload: any) { }
 }
 
 export class GetCoursesComplete implements Action {
   readonly type = CoursesActionTypes.GET_COURSES_COMPLETE;
-  constructor(public payload: Course[]) { }
+  constructor(public payload: any) { }
 }
 
 export class GetCoursesError implements Action {
@@ -38,6 +38,7 @@ export class AddCourse implements Action {
 
 export class AddCourseComplete implements Action {
   readonly type = CoursesActionTypes.ADD_COURSE_COMPLETE;
+  constructor(public payload: Course) { }
 }
 
 export class AddCoursesError implements Action {
@@ -52,6 +53,7 @@ export class UpdateCourse implements Action {
 
 export class UpdateCourseComplete implements Action {
   readonly type = CoursesActionTypes.UPDATE_COURSE_COMPLETE;
+  constructor(public payload: Course) { }
 }
 
 export class UpdateCourseError implements Action {
@@ -61,12 +63,12 @@ export class UpdateCourseError implements Action {
 
 export class DeleteCourse implements Action {
   readonly type = CoursesActionTypes.DELETE_COURSE;
-  constructor(public payload: number) { }
+  constructor(public payload: any) { }
 }
 
 export class DeleteCourseComplete implements Action {
   readonly type = CoursesActionTypes.DELETE_COURSE_COMPLETE;
-  constructor(public payload: Course) { }
+  constructor(public payload: any) { }
 }
 
 export class DeleteCourseError implements Action {

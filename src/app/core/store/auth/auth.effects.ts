@@ -10,19 +10,19 @@ import { switchMap } from 'rxjs/operators';
 import { AppState } from '../app.state';
 import { User } from '../../../core/models/user.model';
 import { AuthService } from '../../../auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
 
     constructor(private actions$: Actions,
-        private store$: Store<AppState>,
-        private authService: AuthService) { }
+        private authService: AuthService) {}
 
     @Effect()
     logIn$: Observable<Action> = this.actions$.pipe(
         ofType(AuthActions.AuthActionTypes.LOG_IN),
         switchMap((action: any) => {
-            return this.authService.login(action.login, action.password).toPromise()
+            return this.authService.login(action.payload.login, action.password).toPromise()
                 .then((data: boolean) => {
                     return data ? new AuthActions.LogInComplete() : new AuthActions.LogInError('Login failed');
                 })
@@ -30,17 +30,17 @@ export class AuthEffects {
         })
     );
 
-    @Effect()
-    logOut$: Observable<Action> = this.actions$.pipe(
-        ofType(AuthActions.AuthActionTypes.LOG_OUT),
-        switchMap((action: any) => {
-            return this.authService.logout().toPromise()
-                .then(() => {
-                    return new AuthActions.LogOutComplete();
-                })
-                .catch(error => new AuthActions.LogOutError(error));
-        })
-    );
+    // @Effect()
+    // logOut$: Observable<Action> = this.actions$.pipe(
+    //     ofType(AuthActions.AuthActionTypes.LOG_OUT),
+    //     switchMap((action: any) => {
+    //         return this.authService.logout().toPromise()
+    //             .then(() => {
+    //                 return new AuthActions.LogOutComplete();
+    //             })
+    //             .catch(error => new AuthActions.LogOutError(error));
+    //     })
+    // );
 
     @Effect()
     getUserInfo$: Observable<Action> = this.actions$.pipe(

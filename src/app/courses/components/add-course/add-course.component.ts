@@ -11,15 +11,13 @@ import { AppState } from '../../../core/store/app.state';
     templateUrl: './add-course.component.html',
     styleUrls: ['./add-course.component.css']
 })
-export class AddCourseComponent implements OnDestroy {
+export class AddCourseComponent {
 
     public courseTitle = '';
     public courseDescription = '';
     public courseDuration = 0;
     public courseDate = new Date();
     public courseAuthors = '';
-
-    private createCourseSubscription: Subscription;
 
     constructor(private router: Router,
         private store: Store<AppState>) { }
@@ -32,9 +30,5 @@ export class AddCourseComponent implements OnDestroy {
         var course = new Course(Date.now(), this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, false, []);
         this.store.dispatch(new coursesActions.AddCourse(course));
         this.router.navigate(['courses']);
-    }
-
-    ngOnDestroy(): void {
-        this.createCourseSubscription.unsubscribe();
     }
 }

@@ -24,17 +24,6 @@ export function authReducer(state = initialAuthState, action: AuthActions): Auth
         case AuthActionTypes.LOG_OUT: {
             return { ...state, loading: true };
         }
-        case AuthActionTypes.LOG_OUT_COMPLETE: {
-            return { ...state, loading: false };
-        }
-        case AuthActionTypes.LOG_OUT_ERROR: {
-            const error = action.payload;
-            return {
-                ...state,
-                loading: false,
-                error
-            };
-        }
         case AuthActionTypes.GET_USER_INFO: {
             return { ...state, loading: true };
         }

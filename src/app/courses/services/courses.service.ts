@@ -21,23 +21,23 @@ export class CoursesService {
     return this.http.get<Course[]>(`${API_URl}courses`, { params: { textFragment, start, count } }).pipe(delay(DELAY_MS));
   }
 
-  createCourse(course: Course) {
+  createCourse(course: Course): Observable<Course> {
     const url = `${API_URl}courses`;
-    return this.http.post(url, course).pipe(delay(DELAY_MS));
+    return this.http.post<Course>(url, course);
   }
 
   findCourseById(id: number): Observable<Course> {
     const url = `${API_URl}courses/${id}`;
-    return this.http.get<Course>(url).pipe(delay(DELAY_MS));
+    return this.http.get<Course>(url);
   }
 
   updateCourse(course: Course) {
     const url = `${API_URl}courses/${course.id}`;
-    return this.http.put(url, course).pipe(delay(DELAY_MS));
+    return this.http.put(url, course);
   }
 
-  deleteCourse(id: number): Observable<Course> {
+  deleteCourse(id: number) {
     const url = `${API_URl}courses/${id}`;
-    return this.http.delete<Course>(url).pipe(delay(DELAY_MS));
+    return this.http.delete(url);
   }
 }

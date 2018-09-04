@@ -15,6 +15,7 @@ export class CoursesListComponent implements OnInit {
   public courses$: Observable<ReadonlyArray<Course>>;
   public canLoadMore: boolean = true;
   private currentPage: number = 0;
+  private query: string = '';
 
   constructor(
     private coursesStore: Store<AppState>) { }
@@ -22,7 +23,7 @@ export class CoursesListComponent implements OnInit {
   ngOnInit() {
     this.courses$ = this.coursesStore
       .select(state => state.courses.data);
-    this.coursesStore.dispatch(new coursesActions.GetCourses({ query: '', pageNumber: this.currentPage }));
+    this.fetchCourses();
   }
 
   deleteCourseHandler(course: Course) {
@@ -33,11 +34,16 @@ export class CoursesListComponent implements OnInit {
 
   loadMoreHandler() {
     this.currentPage++;
-    this.coursesStore.dispatch(new coursesActions.GetCourses({ query: '', pageNumber: this.currentPage }));
+    this.fetchCourses();
   }
 
   searchCourseHandler(query: string) {
     this.currentPage = 0;
-    this.coursesStore.dispatch(new coursesActions.GetCourses({ query: query, pageNumber: this.currentPage }));
+    this.query = query;
+    this.fetchCourses();
+  }
+
+  fetchCourses() {
+    this.coursesStore.dispatch(new coursesActions.GetCourses({ query: this.query, pageNumber: this.currentPage }));
   }
 }

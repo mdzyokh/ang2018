@@ -1,8 +1,8 @@
 <app-toolbox (searchEmitter)='searchCourseHandler($event)'></app-toolbox>
 <div class="component mr-3 ml-3">
-    <app-course-item *ngFor="let course of (courses | orderByDate)" (deleteCourse)="deleteCourseHandler($event)" [course]="course"></app-course-item>
+    <app-course-item *ngFor="let course of courses$ | async" (deleteCourse)="deleteCourseHandler($event)" [course]="course"></app-course-item>
     <button *ngIf="canLoadMore" (click)="loadMoreHandler()" type="button" class="btn btn-secondary btn-lg btn-block mt-2 mb-2">LOAD MORE</button>
-    <div *ngIf="!courses.length" class="container text-center">
+    <div *ngIf="(courses$ | async).length === 0" class="container text-center">
         <p>NO DATA, FEEL FREE TO ADD NEW CORSE</p>
     </div>
 </div>

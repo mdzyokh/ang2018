@@ -14,6 +14,12 @@ import { CoursesGuard } from './courses.guard';
 
 import { TokenInterceptor } from './core/interceptors/token-interceptor';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './core/store/auth/auth.effects';
+import { CoursesEffects } from './core/store/courses/courses.effects';
+import { authReducer } from './core/store/auth/auth.reducer';
+import { coursesReducer } from './core/store/courses/courses.reducer';
 
 
 @NgModule({
@@ -26,7 +32,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     CoursesModule,
     AuthModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({
+      auth: authReducer,
+      courses: coursesReducer
+    }),
+    EffectsModule.forRoot([ AuthEffects, CoursesEffects ])
   ],
   providers: [AuthService, AuthGuard, CoursesGuard, { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },],
   bootstrap: [AppComponent]
