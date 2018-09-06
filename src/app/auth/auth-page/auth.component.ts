@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import * as authActions from '../../core/store/auth/auth.actions';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../core/store/app.state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -12,16 +15,30 @@ export class AuthComponent {
   public login = '';
   public pass = '';
 
-  constructor(private router: Router,
-    private authService: AuthService) { }
+  public isAuthenticated$: Observable<boolean>;
+  public loginError: boolean = false;
 
-  onSubmit() {
-    this.authService.login(this.login, this.pass)
-      .subscribe(isLoggedIn => {
-        if (isLoggedIn) {
-          this.router.navigate(['/courses'])
-        }
+  constructor(private router: Router,
+    private store: Store<AppState>) {
+    this.isAuthenticated$ = this.store
+      .select(state => state.auth.isAuthenticated);
+    this.isAuthenticated$.subscribe((isAuth) => {
+      if (isAuth) {
+        this.router.navigate(['/courses'])
+      }
+    });
+    this.store
+      .select(state => state.auth.error).subscribe((err) => {
+        this.loginError = err !== null;
       });
+
   }
 
+  onSubmit() {
+    this.loginError = false;
+    this.store.dispatch(new authActions.LogIn({
+      login: this.login,
+      password: this.pass
+    }));
+  }
 }

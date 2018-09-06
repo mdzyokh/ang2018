@@ -1,5 +1,5 @@
 <nav class="navbar navbar-light bg-light rounded d-flex flex-row">
     <app-logo class="mr-auto"></app-logo>
-    <app-login *ngIf="user" [currentUser]="user" (logout)="onLogout($event)" class="mr-1">
+    <app-login *ngIf="(user$ | async)" [currentUser]="(user$ | async)" (logout)="onLogout($event)" class="mr-1">
     </app-login>
 </nav>

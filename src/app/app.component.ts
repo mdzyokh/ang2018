@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthService } from './auth/services/auth.service';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from './core/store/app.state';
@@ -11,15 +10,13 @@ import { AppState } from './core/store/app.state';
 })
 export class AppComponent {
   title = 'app';
-  isAuthenticated = false;
+  public isAuthenticated$: Observable<boolean>;
   public isLoading$: Observable<boolean>;
 
-  constructor(private authService: AuthService,
-    private coursesStore: Store<AppState>) {
-    this.authService.isAuthenticated().subscribe(
-      isAuthenticated => this.isAuthenticated = isAuthenticated
-    );
-    this.isLoading$  = this.coursesStore
-    .select(state => state.courses.loading);
+  constructor(private store: Store<AppState>) {
+    this.isLoading$ = this.store
+      .select(state => state.courses.loading);
+    this.isAuthenticated$ = this.store
+      .select(state => state.auth.isAuthenticated);
   }
 }

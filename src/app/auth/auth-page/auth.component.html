@@ -15,6 +15,9 @@
             <small [hidden]="password.valid || password.pristine" class="text-danger">
                 Password is required
             </small>
+            <small [hidden]="!loginError" class="text-danger">
+                Unable to login. Email or password is incorrect
+            </small>
         </div>
         <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Login</button>
     </form>

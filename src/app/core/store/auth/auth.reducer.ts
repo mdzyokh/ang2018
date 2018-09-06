@@ -8,39 +8,30 @@ export function authReducer(state = initialAuthState, action: AuthActions): Auth
             return { ...state, loading: true };
         }
         case AuthActionTypes.LOG_IN_COMPLETE: {
+            const user = action.payload;
             return {
                 ...state,
-                loading: false
+                user,
+                isAuthenticated: true,
+                loading: false,
+                error: null,
             };
         }
         case AuthActionTypes.LOG_IN_ERROR: {
             const error = action.payload;
             return {
                 ...state,
+                isAuthenticated: false,
                 loading: false,
                 error
             };
         }
         case AuthActionTypes.LOG_OUT: {
-            return { ...state, loading: true };
-        }
-        case AuthActionTypes.GET_USER_INFO: {
-            return { ...state, loading: true };
-        }
-        case AuthActionTypes.GET_USER_COMPLETE: {
-            const user = <User>action.payload;
             return {
                 ...state,
-                user,
-                loading: false
-            };
-        }
-        case AuthActionTypes.GET_USER_ERROR: {
-            const error = action.payload;
-            return {
-                ...state,
-                loading: false,
-                error
+                user: null,
+                isAuthenticated: false,
+                error: null
             };
         }
         default:

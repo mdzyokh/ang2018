@@ -15,29 +15,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(login: string, password: string): Observable<boolean> {
+  login(login: string, password: string): Observable<User> {
     const url = `${API_URL}users`;
     return this.http.get<User[]>(url, { params: { login, password } })
       .pipe(map((users) => {
         if (!users.length) {
-          return false;
+          return null;
         }
-        const { fakeToken } = users[0];
+        const user = users[0];
+        const { fakeToken } = user;
         this.fakeToken.next(fakeToken);
-        return true;
+        return user;
       }));
   }
 
   logout(): Observable<void> {
     return of(this.fakeToken.next(null));
-  }
-
-  isAuthenticated(): Observable<boolean> {
-    return this.fakeToken.pipe(
-      map(
-        fakeToken => fakeToken !== null
-      )
-    );
   }
 
   getUserInfo(): Observable<User> {
