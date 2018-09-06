@@ -10,13 +10,13 @@ import { Router } from '@angular/router';
 export class AuthComponent {
 
   public login = '';
-  public password = '';
+  public pass = '';
 
   constructor(private router: Router,
     private authService: AuthService) { }
 
   onSubmit() {
-    this.authService.login(this.login, this.password)
+    this.authService.login(this.login, this.pass)
       .subscribe(isLoggedIn => {
         if (isLoggedIn) {
           this.router.navigate(['/courses'])

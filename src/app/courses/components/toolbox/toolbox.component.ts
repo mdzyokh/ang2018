@@ -9,6 +9,7 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./toolbox.component.css']
 })
 export class ToolboxComponent implements OnInit {
+  searchText: string;
   public searchInput = new BehaviorSubject<string>('');
   @Output()
   public searchEmitter = new EventEmitter<string>();
@@ -21,7 +22,7 @@ export class ToolboxComponent implements OnInit {
     .subscribe((value) => {
       if (value && value.length > 2){
         this.searchEmitter.emit(value);
-      } else {
+      } else if (value.length === 0) {
         this.searchEmitter.emit('');
       }
     })

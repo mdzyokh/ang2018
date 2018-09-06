@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import * as coursesActions from '../../../core/store/courses/courses.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../core/store/app.state';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-edit-course',
@@ -14,17 +15,21 @@ import { AppState } from '../../../core/store/app.state';
 export class EditCourseComponent implements OnInit {
 
     public id;
-    public courseTitle = '';
-    public courseDescription = '';
-    public courseDuration = 0;
-    public courseDate = new Date();
-    public courseAuthors = '';
-    public topRated;
+    public topRated = false;
+    public updateCourseForm: FormGroup;
 
     constructor(private router: Router,
         private activatedRoute: ActivatedRoute,
-        private coursesStore: Store<AppState>) { }
-
+        private coursesStore: Store<AppState>,
+        private fb: FormBuilder) {
+        this.updateCourseForm = this.fb.group({
+            title: ['', [Validators.required, Validators.maxLength(50)]],
+            description: ['', Validators.maxLength(500)],
+            date: [new Date().toISOString()],
+            duration: [0],
+            authors: ['']
+        });
+    }
 
     ngOnInit(): void {
         this.activatedRoute.params.subscribe((params: Params) => {
@@ -34,11 +39,10 @@ export class EditCourseComponent implements OnInit {
                 .subscribe((courses: Course[]) => {
                     const course = courses.find((item) => item.id === this.id);
                     if (course) {
-                        this.courseTitle = course.name;
-                        this.courseDescription = course.description;
-                        this.courseDuration = course.length;
-                        this.courseDate = course.date;
-                        this.courseAuthors = '';
+                        this.updateCourseForm.controls.title.setValue(course.name);
+                        this.updateCourseForm.controls.description.setValue(course.description);
+                        this.updateCourseForm.controls.date.setValue(course.date.toString().substring(0, 10));
+                        this.updateCourseForm.controls.duration.setValue(course.length);
                         this.topRated = course.isTopRated;
                     } else {
                         this.router.navigate(['courses']);
@@ -52,7 +56,9 @@ export class EditCourseComponent implements OnInit {
     }
 
     public save() {
-        var course = new Course(this.id, this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, this.topRated, []);
+        const course = new Course(this.id, this.updateCourseForm.controls.title.value, this.updateCourseForm.controls.date.value,
+            this.updateCourseForm.controls.duration.value, this.updateCourseForm.controls.description.value, this.topRated,
+            this.updateCourseForm.controls.authors.value);
         this.coursesStore.dispatch(new coursesActions.UpdateCourse(course));
         this.router.navigate(['courses']);
     }

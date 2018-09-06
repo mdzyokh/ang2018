@@ -1,33 +1,42 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Course } from '../../models/course.model';
-import { Subscription } from 'rxjs';
 import * as coursesActions from '../../../core/store/courses/courses.actions';
 import { AppState } from '../../../core/store/app.state';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-add-course',
     templateUrl: './add-course.component.html',
     styleUrls: ['./add-course.component.css']
 })
-export class AddCourseComponent {
+export class AddCourseComponent implements OnInit {
 
-    public courseTitle = '';
-    public courseDescription = '';
-    public courseDuration = 0;
-    public courseDate = new Date();
-    public courseAuthors = '';
+    public addCourseForm: FormGroup;
 
     constructor(private router: Router,
-        private store: Store<AppState>) { }
+        private store: Store<AppState>,
+        private fb: FormBuilder) { }
+
+    ngOnInit() {
+        this.addCourseForm = this.fb.group({
+            title: ['', [Validators.required, Validators.maxLength(50)]],
+            description: ['', Validators.maxLength(500)],
+            date: [new Date().toISOString()],
+            duration: [0],
+            authors: ['']
+        });
+    }
 
     public close() {
         this.router.navigate(['courses']);
     }
 
     public save() {
-        var course = new Course(Date.now(), this.courseTitle, this.courseDate, this.courseDuration, this.courseDescription, false, []);
+        console.log(this.addCourseForm.value);
+        const course = new Course(Date.now(), this.addCourseForm.controls.title.value, this.addCourseForm.controls.date.value,
+            this.addCourseForm.controls.duration.value, this.addCourseForm.controls.description.value, false, []);
         this.store.dispatch(new coursesActions.AddCourse(course));
         this.router.navigate(['courses']);
     }
